@@ -2,6 +2,7 @@
   "name": "web-monitor",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "workspaces": [
     "packages/shared",
     "packages/sdk",
