@@ -35,47 +35,7 @@ export async function queryAnalytics(
     const timeRangeHours = (new Date(params.to).getTime() - new Date(params.from).getTime()) / (1000 * 60 * 60);
     const groupBy = params.group_by || (timeRangeHours > 24 ? 'day' : 'hour');
 
-    // Try pre-aggregated metrics for larger time ranges
-    if (timeRangeHours > 24 && (groupBy === 'day' || groupBy === 'hour')) {
-      const table = groupBy === 'day' ? 'metrics_daily' : 'metrics_hourly';
-      const timeCol = groupBy === 'day' ? 'day' : 'hour';
-
-      let query = supabase
-        .from(table)
-        .select(`${timeCol}, count, unique_sessions, unique_users, avg_value, p50_value, p95_value, p99_value`, { count: 'exact' })
-        .eq('app_id', params.app_id)
-        .eq('event_type', eventType)
-        .gte(timeCol, params.from)
-        .lte(timeCol, params.to)
-        .order(timeCol, { ascending: false })
-        .range(params.offset, params.offset + params.limit - 1);
-
-      if (params.path) {
-        query = query.ilike('path', params.path.replace('*', '%'));
-      }
-
-      const { data, count, error } = await query;
-
-      if (!error && data && data.length > 0) {
-        res.json({
-          data: data.map((row: Record<string, unknown>) => ({
-            period: String(row[timeCol]),
-            count: Number(row.count || 0),
-            unique_sessions: Number(row.unique_sessions || 0),
-            unique_users: Number(row.unique_users || 0),
-            avg_value: row.avg_value ? Number(row.avg_value) : undefined,
-            p50_value: row.p50_value ? Number(row.p50_value) : undefined,
-            p95_value: row.p95_value ? Number(row.p95_value) : undefined,
-            p99_value: row.p99_value ? Number(row.p99_value) : undefined,
-          })),
-          total: count || 0,
-          query: params,
-        });
-        return;
-      }
-    }
-
-    // Fall back to raw events with RPC for grouped queries
+    // Grouped queries via RPC
     if (groupBy === 'day' || groupBy === 'hour' || groupBy === 'path') {
       const { data, error } = await supabase.rpc('query_events_grouped', {
         p_app_id: params.app_id,

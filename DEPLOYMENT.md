@@ -55,8 +55,6 @@ db/migrations/006_create_rpc_functions.sql
 | `apps` | Registered applications |
 | `events` | Raw events from SDK |
 | `sessions` | User session metadata |
-| `metrics_hourly` | Pre-aggregated hourly metrics |
-| `metrics_daily` | Pre-aggregated daily metrics |
 
 ---
 

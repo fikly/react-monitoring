@@ -132,7 +132,6 @@ Events are batched (20 per batch or every 10s) and flushed via `sendBeacon` on p
 | `/api/v1/d/sessions` | GET | Session analytics |
 | `/api/v1/d/feature-usage` | GET | Feature usage |
 | `/api/v1/d/records` | GET | Raw events |
-| `/api/v1/d/aggregate` | POST | Manual aggregation trigger |
 
 ## Environment Variables
 

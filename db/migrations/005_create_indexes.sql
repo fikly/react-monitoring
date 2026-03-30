@@ -27,17 +27,3 @@ CREATE INDEX IF NOT EXISTS idx_sessions_user
 CREATE INDEX IF NOT EXISTS idx_sessions_active
     ON sessions (is_active, last_activity DESC);
 
--- Metrics indexes
-CREATE INDEX IF NOT EXISTS idx_metrics_hourly_lookup
-    ON metrics_hourly (app_id, hour DESC, event_type);
-
-CREATE INDEX IF NOT EXISTS idx_metrics_hourly_path
-    ON metrics_hourly (app_id, event_type, path, hour DESC)
-    WHERE path IS NOT NULL;
-
-CREATE INDEX IF NOT EXISTS idx_metrics_daily_lookup
-    ON metrics_daily (app_id, day DESC, event_type);
-
-CREATE INDEX IF NOT EXISTS idx_metrics_daily_path
-    ON metrics_daily (app_id, event_type, path, day DESC)
-    WHERE path IS NOT NULL;
