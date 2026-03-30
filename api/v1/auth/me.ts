@@ -27,13 +27,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   let orgs: Array<{ id: string; name: string; slug: string; role: string }> = [];
   if (user.isSuperadmin) {
     const { data } = await supabase.from('organizations').select('id, name, slug');
-    orgs = (data ?? []).map((o: Record<string, string>) => ({ ...o, role: 'superadmin' }));
+    orgs = (data ?? []).map((o) => ({ id: o.id, name: o.name, slug: o.slug, role: 'superadmin' }));
   } else if (memberships && memberships.length > 0) {
     const orgIds = memberships.map((m: { org_id: string }) => m.org_id);
     const { data } = await supabase.from('organizations').select('id, name, slug').in('id', orgIds);
-    orgs = (data ?? []).map((o: Record<string, string>) => {
+    orgs = (data ?? []).map((o) => {
       const membership = memberships.find((m: { org_id: string }) => m.org_id === o.id);
-      return { ...o, role: membership?.role ?? 'member' };
+      return { id: o.id, name: o.name, slug: o.slug, role: membership?.role ?? 'member' };
     });
   }
 
