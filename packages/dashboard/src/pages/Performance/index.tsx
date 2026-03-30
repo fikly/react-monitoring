@@ -101,7 +101,7 @@ export default function Performance() {
   const [groupBy, setGroupBy] = useState<'day' | 'hour'>('day');
 
   const baseFilters: QueryFilters = {
-    app_id: selectedAppId!,
+    app_id: selectedAppId ?? '',
     from: dateRange.from,
     to: dateRange.to,
   };

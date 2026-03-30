@@ -111,7 +111,7 @@ export default function Overview() {
   const [dateRange, setDateRange] = useState(getDefaultDateRange);
 
   const baseFilters: QueryFilters = {
-    app_id: selectedAppId!,
+    app_id: selectedAppId ?? '',
     from: dateRange.from,
     to: dateRange.to,
     group_by: 'day',
