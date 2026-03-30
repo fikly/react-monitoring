@@ -3,6 +3,11 @@
   "outputDirectory": "packages/dashboard/dist",
   "installCommand": "npm install",
   "framework": null,
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@5.6.22"
+    }
+  },
   "rewrites": [
     { "source": "/api/v1/health", "destination": "/api/v1/health" },
     { "source": "/api/v1/events/batch", "destination": "/api/v1/events/batch" },
