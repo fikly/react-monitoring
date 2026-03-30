@@ -72,7 +72,7 @@ BEGIN
   ELSIF p_group_by = 'path' THEN
     RETURN QUERY
       SELECT
-        e.path as period,
+        e.path::TEXT as period,
         COUNT(*)::BIGINT as count,
         COUNT(DISTINCT e.session_id)::BIGINT as unique_sessions,
         COUNT(DISTINCT e.user_id) FILTER (WHERE e.user_id IS NOT NULL)::BIGINT as unique_users,
@@ -90,7 +90,7 @@ BEGIN
         AND (p_event_type IS NULL OR e.event_type = p_event_type)
         AND (p_path IS NULL OR e.path ILIKE replace(p_path, '*', '%'))
       GROUP BY e.path
-      ORDER BY count DESC
+      ORDER BY 2 DESC
       LIMIT p_limit OFFSET p_offset;
   END IF;
 END;
