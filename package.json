@@ -5,16 +5,13 @@
   "workspaces": [
     "packages/shared",
     "packages/sdk",
-    "packages/server",
     "packages/dashboard"
   ],
   "scripts": {
     "build": "npm run build --workspaces",
     "build:shared": "npm run build -w packages/shared",
     "build:sdk": "npm run build -w packages/sdk",
-    "build:server": "npm run build -w packages/server",
     "build:dashboard": "npm run build -w packages/dashboard",
-    "dev:server": "npm run dev -w packages/server",
     "dev:dashboard": "npm run dev -w packages/dashboard",
     "lint": "eslint packages/*/src --ext .ts,.tsx",
     "typecheck": "tsc --build"

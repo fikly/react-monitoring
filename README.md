@@ -30,8 +30,9 @@ This is a monorepo using npm workspaces:
 |---------|-------------|
 | `packages/shared` | Shared types and utilities |
 | `packages/sdk` | Client SDK for React apps (hooks, providers, error boundary) |
-| `packages/server` | Express API server (event ingestion, aggregation, queries) |
 | `packages/dashboard` | React dashboard (Vite + Ant Design + Recharts) |
+| `api/` | Vercel serverless API routes (event ingestion, queries) |
+| `db/migrations/` | SQL migration files for Supabase |
 
 ## Quick Start
 
@@ -52,10 +53,7 @@ npm install
 # Run the dashboard (port 3200)
 npm run dev:dashboard
 
-# Run the server (port 3100) — requires .env in packages/server
-npm run dev:server
-
-# Or use Vercel CLI for full local setup
+# Run full local setup (API + dashboard)
 vercel dev
 ```
 
@@ -156,6 +154,6 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for full Supabase setup, Vercel deployment, a
 ## Tech Stack
 
 - **SDK**: TypeScript, React hooks, Web Vitals, Axios interceptors
-- **Server**: Express, Supabase, Zod, node-cron, rate limiting
+- **API**: Vercel serverless functions, Supabase, Zod
 - **Dashboard**: React 18, Vite, Ant Design, Recharts, TanStack Query
 - **Deployment**: Vercel (serverless functions + static hosting)

@@ -40,21 +40,13 @@
 Open the **SQL Editor** in your Supabase dashboard and run each migration file in order:
 
 ```
-packages/server/src/db/migrations/001_create_apps.sql
-packages/server/src/db/migrations/002_create_events.sql
-packages/server/src/db/migrations/003_create_sessions.sql
-packages/server/src/db/migrations/004_create_metrics.sql
-packages/server/src/db/migrations/005_create_indexes.sql
-packages/server/src/db/migrations/006_create_rpc_functions.sql
+db/migrations/001_create_apps.sql
+db/migrations/002_create_events.sql
+db/migrations/003_create_sessions.sql
+db/migrations/004_create_metrics.sql
+db/migrations/005_create_indexes.sql
+db/migrations/006_create_rpc_functions.sql
 ```
-
-Or print them all at once:
-
-```bash
-npm run migrate -w packages/server
-```
-
-This prints the SQL — copy and paste into the Supabase SQL Editor.
 
 ### 1c. Tables Created
 
@@ -248,10 +240,7 @@ npm install
 # Run dashboard (port 3200)
 npm run dev:dashboard
 
-# Run server locally (port 3100) — requires SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in packages/server/.env
-npm run dev:server
-
-# Or use Vercel CLI for full local setup
+# Run full local setup (API + dashboard)
 vercel dev
 ```
 
