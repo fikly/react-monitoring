@@ -77,5 +77,54 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
+  if (req.method === 'PUT') {
+    const appId = req.query.app_id as string | undefined;
+    if (!appId) { res.status(400).json({ error: 'Missing app_id parameter' }); return; }
+
+    // Get app to check ownership
+    const { data: app } = await supabase
+      .from('apps')
+      .select('id, org_id')
+      .eq('app_id', appId)
+      .single();
+
+    if (!app) { res.status(404).json({ error: 'App not found' }); return; }
+
+    if (!user.isSuperadmin) {
+      if (!user.orgIds.includes(app.org_id)) {
+        res.status(403).json({ error: 'Access denied' });
+        return;
+      }
+      const { data: membership } = await supabase
+        .from('org_members')
+        .select('role')
+        .eq('org_id', app.org_id)
+        .eq('user_id', user.userId)
+        .single();
+      if (!membership || !['owner', 'admin'].includes(membership.role)) {
+        res.status(403).json({ error: 'Only owners and admins can update apps' });
+        return;
+      }
+    }
+
+    const { is_active } = req.body as { is_active?: boolean };
+    if (typeof is_active !== 'boolean') {
+      res.status(400).json({ error: 'Missing is_active field' });
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('apps')
+      .update({ is_active })
+      .eq('app_id', appId)
+      .select('id, app_id, name, api_key, org_id, is_active, created_at')
+      .single();
+
+    if (error) { res.status(500).json({ error: 'Failed to update app' }); return; }
+
+    res.json({ data });
+    return;
+  }
+
   res.status(405).json({ error: 'Method not allowed' });
 }

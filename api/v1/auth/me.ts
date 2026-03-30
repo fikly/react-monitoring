@@ -5,16 +5,44 @@ import { getSupabase } from '../../_lib/supabase';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (cors(req, res)) return;
-  if (req.method !== 'GET') { res.status(405).json({ error: 'Method not allowed' }); return; }
 
   const user = await authenticateDashboard(req, res);
   if (!user) return;
 
   const supabase = getSupabase();
 
+  // PUT: change password
+  if (req.method === 'PUT') {
+    const { password } = req.body as { password?: string };
+    if (!password || password.length < 6) {
+      res.status(400).json({ error: 'Password must be at least 6 characters' });
+      return;
+    }
+
+    const { error: updateError } = await supabase.auth.admin.updateUserById(user.userId, { password });
+    if (updateError) {
+      res.status(500).json({ error: 'Failed to update password' });
+      return;
+    }
+
+    // Clear must_change_password flag
+    await supabase
+      .from('user_profiles')
+      .update({ must_change_password: false })
+      .eq('user_id', user.userId);
+
+    res.json({ message: 'Password updated' });
+    return;
+  }
+
+  if (req.method !== 'GET') {
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
   const { data: profile } = await supabase
     .from('user_profiles')
-    .select('display_name, is_superadmin')
+    .select('display_name, is_superadmin, must_change_password')
     .eq('user_id', user.userId)
     .single();
 
@@ -56,6 +84,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       email: user.email,
       display_name: profile?.display_name ?? user.email,
       is_superadmin: user.isSuperadmin,
+      must_change_password: profile?.must_change_password ?? false,
     },
     orgs,
     apps,

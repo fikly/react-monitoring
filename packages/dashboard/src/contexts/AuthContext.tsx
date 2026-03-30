@@ -8,6 +8,7 @@ export interface UserProfile {
   email: string;
   display_name: string;
   is_superadmin: boolean;
+  must_change_password: boolean;
   orgs: Array<{ id: string; name: string; slug: string; role: string }>;
   apps: Array<{ app_id: string; name: string; org_id: string; is_active: boolean }>;
 }
@@ -35,7 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { data } = await api.get('/auth/me', {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
-      setProfile(data);
+      setProfile({ ...data.user, orgs: data.orgs, apps: data.apps });
     } catch {
       setProfile(null);
     }
