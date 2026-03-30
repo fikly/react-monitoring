@@ -1,0 +1,32 @@
+{
+  "name": "web-monitor",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/shared",
+    "packages/sdk",
+    "packages/server",
+    "packages/dashboard"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "build:shared": "npm run build -w packages/shared",
+    "build:sdk": "npm run build -w packages/sdk",
+    "build:server": "npm run build -w packages/server",
+    "build:dashboard": "npm run build -w packages/dashboard",
+    "dev:server": "npm run dev -w packages/server",
+    "dev:dashboard": "npm run dev -w packages/dashboard",
+    "lint": "eslint packages/*/src --ext .ts,.tsx",
+    "typecheck": "tsc --build"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@vercel/node": "^3.0.0",
+    "typescript": "^5.3.3",
+    "eslint": "^8.57.0"
+  }
+}

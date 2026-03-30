@@ -1,0 +1,53 @@
+{
+  "name": "@web-monitor/sdk",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "react": ["./dist/react.d.ts"]
+    }
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.mjs",
+      "require": "./dist/react.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@web-monitor/shared": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0",
+    "react-router-dom": ">=6.0.0",
+    "axios": ">=1.0.0",
+    "web-vitals": ">=2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-router-dom": { "optional": true },
+    "axios": { "optional": true },
+    "web-vitals": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.0",
+    "axios": "^1.6.2",
+    "web-vitals": "^3.5.0",
+    "tsup": "^8.0.1"
+  }
+}
