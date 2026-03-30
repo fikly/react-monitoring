@@ -1,16 +1,47 @@
 import axios from 'axios';
 import type { AnalyticsResponse, QueryFilters } from '@/types';
+import { supabase } from '@/lib/supabase';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '/api/v1';
-const APP_ID = import.meta.env.VITE_APP_ID || 'my-app';
 
 const api = axios.create({
   baseURL: API_BASE,
   headers: {
     'Content-Type': 'application/json',
-    'X-App-Id': APP_ID,
   },
 });
+
+// Attach JWT to every request
+api.interceptors.request.use(async (config) => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.access_token) {
+    config.headers.Authorization = `Bearer ${session.access_token}`;
+  }
+  return config;
+});
+
+// Handle 401 (expired token)
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401 && !error.config._retry) {
+      error.config._retry = true;
+      const { error: refreshError } = await supabase.auth.refreshSession();
+      if (refreshError) {
+        window.location.href = '/login';
+        return Promise.reject(error);
+      }
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.access_token) {
+        error.config.headers.Authorization = `Bearer ${session.access_token}`;
+      }
+      return api.request(error.config);
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;
 
 function buildParams(filters: QueryFilters): Record<string, string> {
   const params: Record<string, string> = {
@@ -81,11 +112,6 @@ export interface RawEventRecord {
 
 export async function fetchRawEvents(filters: QueryFilters & { event_type?: string }): Promise<RawEventsResponse> {
   const { data } = await api.get('/d/records', { params: buildParams(filters) });
-  return data;
-}
-
-export async function triggerAggregation(): Promise<{ status: string; message: string }> {
-  const { data } = await api.post('/d/aggregate');
   return data;
 }
 

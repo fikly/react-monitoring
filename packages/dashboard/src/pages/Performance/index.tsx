@@ -14,6 +14,7 @@ import TrendChart from '@/components/TrendChart';
 import DateRangeFilter from '@/components/DateRangeFilter';
 import { usePerformance, useApiCalls, useRawEvents } from '@/hooks/useAnalytics';
 import { getDefaultDateRange, formatMs, formatDateTime, getVitalRating, VITAL_COLORS } from '@/utils/format';
+import { useApp } from '@/contexts/AppContext';
 import type { QueryFilters } from '@/types';
 import type { RawEventRecord } from '@/api/client';
 import type { ColumnsType } from 'antd/es/table';
@@ -95,11 +96,12 @@ const rawPerfColumns: ColumnsType<RawEventRecord> = [
 ];
 
 export default function Performance() {
+  const { selectedAppId } = useApp();
   const [dateRange, setDateRange] = useState(getDefaultDateRange);
   const [groupBy, setGroupBy] = useState<'day' | 'hour'>('day');
 
   const baseFilters: QueryFilters = {
-    app_id: 'ttsecuritas-aop',
+    app_id: selectedAppId!,
     from: dateRange.from,
     to: dateRange.to,
   };

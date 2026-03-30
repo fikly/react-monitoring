@@ -12,6 +12,7 @@ import TrendChart from '@/components/TrendChart';
 import DateRangeFilter from '@/components/DateRangeFilter';
 import { usePageViews, useErrors, usePerformance, useSessions, useRawEvents } from '@/hooks/useAnalytics';
 import { getDefaultDateRange, formatNumber, formatMs, formatDateTime } from '@/utils/format';
+import { useApp } from '@/contexts/AppContext';
 import type { QueryFilters, MetricRow } from '@/types';
 import type { RawEventRecord } from '@/api/client';
 
@@ -106,10 +107,11 @@ const recentEventsColumns: ColumnsType<RawEventRecord> = [
 ];
 
 export default function Overview() {
+  const { selectedAppId } = useApp();
   const [dateRange, setDateRange] = useState(getDefaultDateRange);
 
   const baseFilters: QueryFilters = {
-    app_id: 'ttsecuritas-aop',
+    app_id: selectedAppId!,
     from: dateRange.from,
     to: dateRange.to,
     group_by: 'day',

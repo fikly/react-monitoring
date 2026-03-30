@@ -5,7 +5,7 @@ export function cors(req: VercelRequest, res: VercelResponse): boolean {
 
   res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-App-Id, X-Api-Key');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-App-Id, X-Api-Key, Authorization');
   res.setHeader('Access-Control-Max-Age', '86400');
 
   if (req.method === 'OPTIONS') {

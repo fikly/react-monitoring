@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Layout, Menu, Typography, theme } from 'antd';
+import { Layout, Menu, Typography, theme, Select, Dropdown, Avatar, Space } from 'antd';
 import {
   DashboardOutlined,
   EyeOutlined,
   BugOutlined,
   ThunderboltOutlined,
   ApiOutlined,
+  SettingOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  LogoutOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
+import { useAuth } from '@/contexts/AuthContext';
+import { useApp } from '@/contexts/AppContext';
 
 const { Header, Sider, Content } = Layout;
 
@@ -19,6 +24,8 @@ const menuItems = [
   { key: '/errors', icon: <BugOutlined />, label: 'Errors' },
   { key: '/performance', icon: <ThunderboltOutlined />, label: 'Performance' },
   { key: '/api-calls', icon: <ApiOutlined />, label: 'API Calls' },
+  { type: 'divider' as const },
+  { key: '/settings', icon: <SettingOutlined />, label: 'Settings' },
 ];
 
 export default function AppLayout() {
@@ -26,6 +33,8 @@ export default function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { token } = theme.useToken();
+  const { profile, signOut } = useAuth();
+  const { selectedAppId, setSelectedAppId, availableApps } = useApp();
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -74,23 +83,67 @@ export default function AppLayout() {
             background: token.colorBgContainer,
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'space-between',
             borderBottom: `1px solid ${token.colorBorderSecondary}`,
             position: 'sticky',
             top: 0,
             zIndex: 9,
           }}
         >
-          {collapsed ? (
-            <MenuUnfoldOutlined
-              onClick={() => setCollapsed(false)}
-              style={{ fontSize: 18, cursor: 'pointer' }}
+          <Space>
+            {collapsed ? (
+              <MenuUnfoldOutlined
+                onClick={() => setCollapsed(false)}
+                style={{ fontSize: 18, cursor: 'pointer' }}
+              />
+            ) : (
+              <MenuFoldOutlined
+                onClick={() => setCollapsed(true)}
+                style={{ fontSize: 18, cursor: 'pointer' }}
+              />
+            )}
+            {availableApps.length > 0 && (
+              <Select
+                value={selectedAppId}
+                onChange={setSelectedAppId}
+                style={{ width: 200 }}
+                options={availableApps.map(a => ({ label: a.name, value: a.app_id }))}
+              />
+            )}
+          </Space>
+
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  key: 'user',
+                  label: profile?.display_name || profile?.email || '',
+                  disabled: true,
+                  icon: <UserOutlined />,
+                },
+                ...(profile?.is_superadmin ? [{ key: 'badge', label: 'Superadmin', disabled: true }] : []),
+                { type: 'divider' as const },
+                {
+                  key: 'settings',
+                  label: 'Settings',
+                  icon: <SettingOutlined />,
+                  onClick: () => navigate('/settings'),
+                },
+                {
+                  key: 'signout',
+                  label: 'Sign Out',
+                  icon: <LogoutOutlined />,
+                  onClick: signOut,
+                },
+              ],
+            }}
+            trigger={['click']}
+          >
+            <Avatar
+              style={{ cursor: 'pointer', backgroundColor: '#5F5DFF' }}
+              icon={<UserOutlined />}
             />
-          ) : (
-            <MenuFoldOutlined
-              onClick={() => setCollapsed(true)}
-              style={{ fontSize: 18, cursor: 'pointer' }}
-            />
-          )}
+          </Dropdown>
         </Header>
         <Content style={{ padding: 24, background: '#f5f5f5', minHeight: 'calc(100vh - 64px)' }}>
           <Outlet />
