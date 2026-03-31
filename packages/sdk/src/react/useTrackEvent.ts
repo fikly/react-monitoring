@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import type { EventType } from '@web-monitor/shared';
+import type { EventType } from '@pirates_coder/web-monitor-shared';
 import { useMonitor } from './useMonitor';
 
 export function useTrackEvent() {

@@ -1,6 +1,12 @@
 {
-  "name": "@web-monitor/sdk",
-  "version": "1.0.0",
+  "name": "@pirates_coder/web-monitor-sdk",
+  "version": "1.0.2",
+  "description": "Lightweight web analytics SDK for React applications",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": ["dist"],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -26,7 +32,7 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "@web-monitor/shared": "^1.0.0"
+    "@pirates_coder/web-monitor-shared": "^1.0.1"
   },
   "peerDependencies": {
     "react": ">=17.0.0",

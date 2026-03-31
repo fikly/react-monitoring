@@ -1,6 +1,12 @@
 {
-  "name": "@web-monitor/shared",
-  "version": "1.0.0",
+  "name": "@pirates_coder/web-monitor-shared",
+  "version": "1.0.1",
+  "description": "Shared types and constants for web-monitor",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": ["dist"],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

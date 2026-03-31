@@ -1,8 +1,9 @@
-import type { MonitorEvent, EventType } from '@web-monitor/shared';
+import type { MonitorEvent, EventType } from '@pirates_coder/web-monitor-shared';
 
 export interface MonitorConfig {
   appId: string;
   endpoint: string;
+  apiKey?: string;
   batchSize?: number;
   flushInterval?: number;
   enablePageView?: boolean;

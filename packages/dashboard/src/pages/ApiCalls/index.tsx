@@ -20,7 +20,7 @@ import type { RawEventRecord } from '@/api/client';
 import type { ColumnsType } from 'antd/es/table';
 
 const endpointColumns: ColumnsType<MetricRow> = [
-  { title: 'Endpoint', dataIndex: 'period', key: 'period', ellipsis: true },
+  { title: 'Page', dataIndex: 'period', key: 'period', ellipsis: true },
   {
     title: 'Calls',
     dataIndex: 'count',

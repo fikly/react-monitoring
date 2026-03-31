@@ -1,4 +1,4 @@
-import type { MonitorEvent } from '@web-monitor/shared';
+import type { MonitorEvent } from '@pirates_coder/web-monitor-shared';
 import type { TransportOptions } from '../types';
 
 export class Transport {
@@ -34,7 +34,13 @@ export class Transport {
 
   private sendBeacon(payload: string): boolean {
     if (typeof navigator.sendBeacon !== 'function') {
-      // Fallback to sync fetch if sendBeacon unavailable
+      this.sendFetch(payload).catch(() => {});
+      return true;
+    }
+
+    // sendBeacon can't send custom headers, so use fetch with keepalive instead
+    // to ensure X-App-Id and X-Api-Key are included
+    if (Object.keys(this.headers).length > 1) {
       this.sendFetch(payload).catch(() => {});
       return true;
     }

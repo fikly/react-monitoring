@@ -1,4 +1,4 @@
-import { MAX_URL_LENGTH } from '@web-monitor/shared';
+import { MAX_URL_LENGTH } from '@pirates_coder/web-monitor-shared';
 import type { Tracker } from '../types';
 import type { MonitorClient } from '../core/MonitorClient';
 

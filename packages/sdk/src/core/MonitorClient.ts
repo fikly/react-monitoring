@@ -1,5 +1,5 @@
-import type { MonitorEvent, EventType } from '@web-monitor/shared';
-import { DEFAULT_SAMPLE_RATE } from '@web-monitor/shared';
+import type { MonitorEvent, EventType } from '@pirates_coder/web-monitor-shared';
+import { DEFAULT_SAMPLE_RATE } from '@pirates_coder/web-monitor-shared';
 import type { MonitorConfig, TrackEventInput, EnrichPageViewData } from '../types';
 import { SessionManager } from './SessionManager';
 import { EventQueue } from './EventQueue';
@@ -46,6 +46,7 @@ export class MonitorClient {
     this.transport = new Transport({
       endpoint: this.config.endpoint,
       appId: this.config.appId,
+      headers: this.config.apiKey ? { 'X-Api-Key': this.config.apiKey } : undefined,
     });
 
     this.queue = new EventQueue(this.transport, {

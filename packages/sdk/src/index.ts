@@ -20,4 +20,4 @@ export type {
   ApiCallProperties,
   PerformanceProperties,
   CustomEventProperties,
-} from '@web-monitor/shared';
+} from '@pirates_coder/web-monitor-shared';

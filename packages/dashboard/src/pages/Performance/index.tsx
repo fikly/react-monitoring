@@ -36,7 +36,6 @@ const rawPerfColumns: ColumnsType<RawEventRecord> = [
   {
     title: 'Metric',
     key: 'metric_name',
-    width: 90,
     render: (_: unknown, record: RawEventRecord) => {
       const name = String(record.properties?.metric_name || record.properties?.name || '-');
       return <Tag color="purple">{name}</Tag>;
@@ -45,7 +44,6 @@ const rawPerfColumns: ColumnsType<RawEventRecord> = [
   {
     title: 'Value',
     key: 'metric_value',
-    width: 120,
     render: (_: unknown, record: RawEventRecord) => {
       const name = String(record.properties?.metric_name || record.properties?.name || '');
       const value = Number(record.properties?.metric_value ?? record.properties?.value ?? 0);
@@ -58,7 +56,6 @@ const rawPerfColumns: ColumnsType<RawEventRecord> = [
   {
     title: 'Rating',
     key: 'rating',
-    width: 120,
     render: (_: unknown, record: RawEventRecord) => {
       const rating = String(record.properties?.rating || '');
       if (!rating) {
@@ -83,14 +80,12 @@ const rawPerfColumns: ColumnsType<RawEventRecord> = [
     title: 'User',
     dataIndex: 'user_id',
     key: 'user_id',
-    width: 100,
     render: (v: string) => v || <Typography.Text type="secondary">-</Typography.Text>,
   },
   {
     title: 'Time',
     dataIndex: 'created_at',
     key: 'created_at',
-    width: 140,
     render: (v: string) => formatDateTime(v),
   },
 ];
@@ -223,7 +218,7 @@ export default function Performance() {
               loading={rawPerf.isLoading}
               rowKey="id"
               size="small"
-              scroll={{ x: 800 }}
+              scroll={{ x: 'fit-content' }}
               pagination={{ pageSize: 15, showSizeChanger: true }}
               expandable={{
                 expandedRowRender: (record: RawEventRecord) => (

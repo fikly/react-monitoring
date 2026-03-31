@@ -1,5 +1,5 @@
-import type { MonitorEvent } from '@web-monitor/shared';
-import { DEFAULT_BATCH_SIZE, DEFAULT_FLUSH_INTERVAL_MS } from '@web-monitor/shared';
+import type { MonitorEvent } from '@pirates_coder/web-monitor-shared';
+import { DEFAULT_BATCH_SIZE, DEFAULT_FLUSH_INTERVAL_MS } from '@pirates_coder/web-monitor-shared';
 import { Transport } from './Transport';
 import type { FlushReason } from '../types';
 
